@@ -37,7 +37,7 @@ pipeline
             {
                 script
                 {
-                    cicd.newDeployment("shared2","172.31.8.235","uat")
+                    cicd.newDeployment("Multibranch","172.31.8.235","akash")
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline
                 script
                 {
                     cicd.gitDownload("functionaltesting")
-                    cicd.runselenium("shared2")
+                    cicd.runselenium("Multibranch")
                 }
             }
         }
@@ -58,7 +58,7 @@ pipeline
             {
                 script
                 {
-                    cicd.newDeployment("shared2","172.31.1.26","prodc")
+                    cicd.newDeployment("Multibranch","172.31.1.26","borade")
                 }
             }
         }
