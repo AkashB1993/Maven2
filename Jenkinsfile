@@ -1,47 +1,66 @@
-
+@Library('globallink')_
 pipeline
 {
     agent any
     stages
     {
-        stage('continuousDownload')
+        stage('ContiniousDownload')
         {
             steps
             {
-                git 'https://github.com/AkashB1993/Maven.git'
+                script
+                {
+                    try
+                    {
+                      cicd.gitDownload("Maven")  
+                    }
+                    catch(Exception e)
+                    {
+                        mail bcc: '', body: 'dev dow fail', cc: '', from: '', replyTo: '', subject: 'dev fails', to: 'admndev@gmail.com'
+                    }
+                }
             }
         }
-        stage('continuousBuild')
+        stage('contBuild')
+        {
+           steps
+           {
+               script
+               {
+                   cicd.newBuild()
+               }
+           }
+        }
+        stage('contDeploy')
         {
             steps
             {
-                sh 'mvn package'
+                script
+                {
+                    cicd.newDeployment("shared2","172.31.8.235","uat")
+                }
             }
         }
-         stage('continuousDepolyment')
+        stage('ContTesting')
         {
             steps
             {
-            deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.8.235:8080')], contextPath: 'uatmulti', war: '**/*.war'
-	    }
-        }
-        stage('continuousTesting')
-        {
-            steps
-            {
-               git 'https://github.com/AkashB1993/functionaltesting.git'
-       
-               sh 'java -jar /home/ubuntu/.jenkins/workspace/Multibranch/testing.jar'
-              
+                script
+                {
+                    cicd.gitDownload("functionaltesting")
+                    cicd.runselenium("shared2")
+                }
             }
         }
-        stage('continuousDelivery')
+        stage('contDeli')
         {
             steps
             {
-             deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.1.26:8080')], contextPath: 'prodmulti', war: '**/*.war'  
+                script
+                {
+                    cicd.newDeployment("shared2","172.31.1.26","prodc")
+                }
             }
         }
     }
-    
 }
