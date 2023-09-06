@@ -22,9 +22,9 @@ pipeline
         {
             steps
             {
-          
-				deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.8.235:8080')], contextPath: 'testmaven1', war: '**/*.war' 
-            }
+	    //deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.8.235:8080')], contextPath: 'testmaven1', war: '**/*.war' 
+            deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.8.235:8080')], contextPath: 'uatmulti', war: '**/*.war'
+	    }
         }
         stage('continuousTesting')
         {
@@ -32,7 +32,7 @@ pipeline
             {
                git 'https://github.com/AkashB1993/functionaltesting.git'
        
-               sh 'java -jar /home/ubuntu/.jenkins/workspace/Declarativepileline@2/testing.jar'
+               sh 'java -jar /home/ubuntu/.jenkins/workspace/Multibranch/testing.jar'
               
             }
         }
@@ -41,7 +41,7 @@ pipeline
             steps
             {
                
-				deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.3.24:8080')], contextPath: 'testmaven2', war: '**/*.war'
+	deploy adapters: [tomcat9(credentialsId: '14913ee1-760e-42cd-bd05-0d981085ad17', path: '', url: 'http://172.31.3.24:8080')], contextPath: 'testmaven2', war: '**/*.war'
             }
         }
     }
