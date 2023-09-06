@@ -12,7 +12,7 @@ pipeline
                 {
                     try
                     {
-                      cicd.gitDownload("Maven")  
+                      cicd.gitDownload("Maven2")  
                     }
                     catch(Exception e)
                     {
